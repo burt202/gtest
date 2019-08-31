@@ -6,7 +6,8 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && tsc --project tsconfig.json",
-    "build-watch": "nodemon --ext '*' --watch src/ --exec 'npm run build'"
+    "build-watch": "nodemon --ext '*' --watch src/ --exec 'npm run build'",
+    "serve": "nodemon dist/"
   },
   "husky": {
     "hooks": {
