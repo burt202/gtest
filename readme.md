@@ -11,7 +11,14 @@ docker-compose up
 
 ```
 {
-  docs {
+  getDocs {
+    name
+  }
+}
+
+mutation {
+  createDoc(name: "bar") {
+    _id
     name
   }
 }

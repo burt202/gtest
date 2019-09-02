@@ -5,17 +5,31 @@ import connectToDb from "./db"
 connectToDb().then(db => {
   const typeDefs = gql`
     type Doc {
-      id: String
+      _id: String
       name: String
     }
 
     type Query {
-      docs: [Doc]
+      getDocs: [Doc]
+    }
+
+    type Mutation {
+      createDoc(name: String): Doc
     }
   `
   const resolvers = {
+    Mutation: {
+      createDoc: (_, {name}) => {
+        return db
+          .collection("docs")
+          .insertOne({name})
+          .then(({ops}) => {
+            return ops[0]
+          })
+      },
+    },
     Query: {
-      docs: () => {
+      getDocs: () => {
         return db
           .collection("docs")
           .find({})
