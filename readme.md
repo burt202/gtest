@@ -4,8 +4,7 @@
 
 npm run build-watch
 
-docker-compose build
-docker-compose up
+docker-compose up --build
 
 ### Queries
 
