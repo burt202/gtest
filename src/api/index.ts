@@ -1,11 +1,12 @@
 import {ApolloServer, gql} from "apollo-server-express"
 import * as express from "express"
+import * as uuidV4 from "uuid/v4"
 import connectToDb from "./db"
 
 connectToDb().then(db => {
   const typeDefs = gql`
     type Doc {
-      _id: String
+      id: String
       name: String
     }
 
@@ -15,6 +16,7 @@ connectToDb().then(db => {
 
     type Mutation {
       createDoc(name: String): Doc
+      deleteDoc(id: String): Boolean
     }
   `
   const resolvers = {
@@ -22,9 +24,17 @@ connectToDb().then(db => {
       createDoc: (_, {name}) => {
         return db
           .collection("docs")
-          .insertOne({name})
+          .insertOne({id: uuidV4(), name})
           .then(({ops}) => {
             return ops[0]
+          })
+      },
+      deleteDoc: (_, {id}) => {
+        return db
+          .collection("docs")
+          .deleteOne({id})
+          .then(({result}) => {
+            return result.n && result.ok
           })
       },
     },

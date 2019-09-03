@@ -12,14 +12,19 @@ docker-compose up
 ```
 {
   getDocs {
+    id
     name
   }
 }
 
 mutation {
   createDoc(name: "bar") {
-    _id
+    id
     name
   }
+}
+
+mutation {
+  deleteDoc(id: "bar")
 }
 ```
