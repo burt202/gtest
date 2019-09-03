@@ -12,10 +12,12 @@ connectToDb().then(db => {
 
     type Query {
       getDocs: [Doc]
+      getDoc(id: String): Doc
     }
 
     type Mutation {
       createDoc(name: String): Doc
+      updateDoc(id: String, name: String): Doc
       deleteDoc(id: String): Boolean
     }
   `
@@ -37,8 +39,25 @@ connectToDb().then(db => {
             return result.n && result.ok
           })
       },
+      updateDoc: (_, {id, name}) => {
+        return db
+          .collection("docs")
+          .update({id}, {$set: {name}})
+          .then(({result}) => {
+            return result.n ? {id, name} : undefined
+          })
+      },
     },
     Query: {
+      getDoc: (_, {id}) => {
+        return db
+          .collection("docs")
+          .find({id})
+          .toArray()
+          .then(result => {
+            return result.length ? result[0] : undefined
+          })
+      },
       getDocs: () => {
         return db
           .collection("docs")
