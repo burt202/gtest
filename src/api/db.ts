@@ -4,7 +4,7 @@ const url = "mongodb://mongo:27017"
 
 const dbName = "gtest"
 
-export default async (): Promise<any> => {
+export default async () => {
   return MongoClient.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

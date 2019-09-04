@@ -3,6 +3,11 @@ import * as express from "express"
 import * as uuidV4 from "uuid/v4"
 import connectToDb from "./db"
 
+interface IDoc {
+  id: string
+  name: string
+}
+
 connectToDb().then(db => {
   const typeDefs = gql`
     type Doc {
@@ -23,7 +28,7 @@ connectToDb().then(db => {
   `
   const resolvers = {
     Mutation: {
-      createDoc: (_, {name}) => {
+      createDoc: (_: any, {name}: IDoc) => {
         return db
           .collection("docs")
           .insertOne({id: uuidV4(), name})
@@ -31,7 +36,7 @@ connectToDb().then(db => {
             return ops[0]
           })
       },
-      deleteDoc: (_, {id}) => {
+      deleteDoc: (_: any, {id}: IDoc) => {
         return db
           .collection("docs")
           .deleteOne({id})
@@ -39,7 +44,7 @@ connectToDb().then(db => {
             return result.n && result.ok
           })
       },
-      updateDoc: (_, {id, name}) => {
+      updateDoc: (_: any, {id, name}: IDoc) => {
         return db
           .collection("docs")
           .update({id}, {$set: {name}})
@@ -49,7 +54,7 @@ connectToDb().then(db => {
       },
     },
     Query: {
-      getDoc: (_, {id}) => {
+      getDoc: (_: any, {id}: IDoc) => {
         return db
           .collection("docs")
           .find({id})
@@ -74,7 +79,7 @@ connectToDb().then(db => {
 
   const currentDate = new Date().toLocaleString()
 
-  app.get("/", (_, res: any) => {
+  app.get("/", (_, res) => {
     res.send(
       `see graphql at http://localhost:8080${server.graphqlPath} - refreshed on ${currentDate}`,
     )
