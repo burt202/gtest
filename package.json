@@ -7,7 +7,8 @@
     "clean": "rm -rf ./dist",
     "build": "npm run clean && tsc --project tsconfig.json",
     "build-watch": "nodemon --ext '*' --watch src/ --exec 'npm run build'",
-    "serve": "nodemon dist/"
+    "serve": "nodemon dist/",
+    "develop": "./scripts/develop.sh"
   },
   "husky": {
     "hooks": {
