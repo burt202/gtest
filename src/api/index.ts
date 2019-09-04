@@ -47,7 +47,7 @@ connectToDb().then(db => {
       updateDoc: (_: any, {id, name}: IDoc) => {
         return db
           .collection("docs")
-          .update({id}, {$set: {name}})
+          .updateOne({id}, {$set: {name}})
           .then(({result}) => {
             return result.n ? {id, name} : undefined
           })
